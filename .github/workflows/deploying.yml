@@ -1,0 +1,40 @@
+name: Deploy to Shopify
+
+on:
+  push:
+    branches:
+      - checkout-ui
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Shopify CLI
+      run: npm install -g @shopify/cli @shopify/app
+
+    - name: Authenticate with Shopify
+      env:
+        SHOPIFY_API_KEY: ${{ secrets.SHOPIFY_API_KEY }}
+        SHOPIFY_API_SECRET: ${{ secrets.SHOPIFY_API_SECRET }}
+        SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+        SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
+        
+      run: |
+        shopify login --store ${{ secrets.SHOPIFY_STORE_URL }} --token $SHOPIFY_ACCESS_TOKEN
+    - name: Deploy to Shopify
+      env:
+        SHOPIFY_API_KEY: ${{ secrets.SHOPIFY_API_KEY }}
+        SHOPIFY_API_SECRET: ${{ secrets.SHOPIFY_API_SECRET }}
+        SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+        SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
+      run: |
+        shopify app deploy ${{ secrets.SHOPIFY_STORE_URL }}
