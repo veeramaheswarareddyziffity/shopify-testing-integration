@@ -3,7 +3,7 @@ name: Deploy to Shopify
 on:
   push:
     branches:
-      - main
+      - checkout-ui
 
 jobs:
   deploy:
