@@ -40,7 +40,7 @@ function App() {
       {checked && (
         <TextField
           label="Delivery instructions"
-          multiline={3}
+          multiline={2}
           onChange={(value) => {
             // Apply the change to the metafield
             applyMetafieldsChange({
